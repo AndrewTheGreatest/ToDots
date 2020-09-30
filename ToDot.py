@@ -14,7 +14,7 @@ from PIL import Image
 from matplotlib import cm
 import concurrent.futures
 
-import ToDot.dot_series
+import dot_series
 
 
 
