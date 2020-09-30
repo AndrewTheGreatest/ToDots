@@ -15,19 +15,9 @@ from matplotlib import cm
 import concurrent.futures
 
 import dot_series
+from progressbar import progressbar
 
 
-
-def progress(value, max=100):
-    return HTML("""
-        <progress
-            value='{value}'
-            max='{max}',
-            style='width: 100%'
-        >
-            {value}
-        </progress>
-    """.format(value=value, max=max))
 
 def average_color(img):
 	flat_img = img.flatten()
@@ -114,8 +104,8 @@ class ToDot:
 
 		main_dots = []
 
-		for i in range(self.number_of_dots):
-			progress(i, max=self.number_of_dots)
+		for i in progressbar(range(self.number_of_dots)):
+			#progress(i, max=self.number_of_dots)
 			difference = cv2.absdiff(beg, blank)
 			
 			if self.diff_blur_amount > 0:
@@ -245,6 +235,6 @@ class ToDot:
 			
 			#plot_dots(img, main_dots)
 
-		progress(self.number_of_dots, max=self.number_of_dots)
+		#progress(self.number_of_dots, max=self.number_of_dots)
 		print("")
 		return blank
