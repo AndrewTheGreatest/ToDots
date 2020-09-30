@@ -18,26 +18,16 @@ import ToDot.dot_series
 
 
 
-def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-	"""
-	Call in a loop to create terminal progress bar
-	@params:
-		iteration   - Required  : current iteration (Int)
-		total       - Required  : total iterations (Int)
-		prefix      - Optional  : prefix string (Str)
-		suffix      - Optional  : suffix string (Str)
-		decimals    - Optional  : positive number of decimals in percent complete (Int)
-		length      - Optional  : character length of bar (Int)
-		fill        - Optional  : bar fill character (Str)
-		printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-	"""
-	percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-	filledLength = int(length * iteration // total)
-	bar = fill * filledLength + '-' * (length - filledLength)
-	print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-	# Print New Line on Complete
-	if iteration == total: 
-		print()
+def progress(value, max=100):
+    return HTML("""
+        <progress
+            value='{value}'
+            max='{max}',
+            style='width: 100%'
+        >
+            {value}
+        </progress>
+    """.format(value=value, max=max))
 
 def average_color(img):
 	flat_img = img.flatten()
@@ -125,7 +115,7 @@ class ToDot:
 		main_dots = []
 
 		for i in range(self.number_of_dots):
-			printProgressBar (i, self.number_of_dots)
+			progress(i, max=self.number_of_dots)
 			difference = cv2.absdiff(beg, blank)
 			
 			if self.diff_blur_amount > 0:
@@ -255,6 +245,6 @@ class ToDot:
 			
 			#plot_dots(img, main_dots)
 
-		printProgressBar (self.number_of_dots, self.number_of_dots)
+		progress(self.number_of_dots, max=self.number_of_dots)
 		print("")
 		return blank
